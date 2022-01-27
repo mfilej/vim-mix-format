@@ -1,5 +1,5 @@
 if exists('b:loaded_mix_format')
-      \ || &filetype != 'elixir'
+      \ || index(['elixir', 'surface'], &filetype) >= 0
       \ || &compatible
   finish
 endif
