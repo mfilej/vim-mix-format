@@ -6,6 +6,13 @@ endif
 
 " Is 'cwd' key for job_start() options available?
 let s:has_cwd = has('nvim') || has('patch-8.0.902')
+let s:has_cwd = has('nvim') || has('patch-8.0.902')
+
+if &filetype == 'surface'
+  let s:format_cmd = 'surface.format'
+else
+  let s:format_cmd = 'format'
+endif
 
 if !exists('g:mix_format_env_cmd')
   " Workaround for https://github.com/mhinz/vim-mix-format/issues/15
@@ -155,12 +162,12 @@ function! s:build_cmd(filename) abort
   let &shellslash = shellslash
 
   if empty(elixir_bin_path)
-    return printf('mix format %s %s', options, filename)
+    return printf('mix ' . s:format_cmd .' %s %s', options, filename)
   endif
 
   return printf('%s %s %s %s',
         \ elixir_bin_path .'/elixir',
-        \ elixir_bin_path .'/mix format',
+        \ elixir_bin_path .'/mix ' . s:format_cmd,
         \ options,
         \ filename)
 endfunction
